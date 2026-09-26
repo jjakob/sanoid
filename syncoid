@@ -1182,7 +1182,8 @@ sub syncclone {
 sub syncresume {
 	my ($sourcehost, $sourcefs, $targethost, $targetfs, $receivetoken) = @_;
 
-	my $sendsource = "-t $receivetoken";
+	my $receivetokenescaped = escapeshellparam($receivetoken);
+	my $sendsource = "-t $receivetokenescaped";
 	my $pvsize = getsendsize($sourcehost,"","",$sourceisroot,$receivetoken);
 
 	my $srcname = buildnicename($sourcehost, $sourcefs);
@@ -2263,7 +2264,7 @@ sub getsendsize {
 	# in case of a resumed receive, get the remaining
 	# size based on the resume token
 	if (defined($receivetoken)) {
-		$snaps = "-t $receivetoken";
+		$snaps = "-t " . escapeshellparam($receivetoken);
 	}
 
 	my $sendoptions;
